@@ -1,0 +1,51 @@
+import java.io.Console;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class JavaReadWriteFile {
+
+	String myfile = "myfile.txt";
+
+	public void writeToFile(double rate) throws IOException {
+		FileOutputStream fout;
+		fout = new FileOutputStream(myfile, true);
+		new PrintStream(fout).println(rate);
+		fout.close();
+	}
+
+	public List<Double> readFromFile() throws IOException {
+		List<Double> rateList = new ArrayList<Double>();
+		Scanner s = new Scanner(new FileInputStream(myfile), "utf-8");
+
+		while (s.hasNextLine()) {
+			rateList.add(Double.parseDouble(s.nextLine()));
+		}
+		return rateList;
+	}
+
+	public double findAvarageRating(List<Double> rateList) {
+		double avarageRating = 0;
+		for (double r : rateList)
+			avarageRating += r;
+		return avarageRating / rateList.size();
+	}
+
+	public static void main(String args[]) {
+		JavaReadWriteFile test = new JavaReadWriteFile();
+
+		try {
+			while (true) {
+				Scanner s = new Scanner(System.in);
+				test.writeToFile(Double.parseDouble(s.next()));
+				System.out.println(test.findAvarageRating(test.readFromFile())+"\n");
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+	}
+}
